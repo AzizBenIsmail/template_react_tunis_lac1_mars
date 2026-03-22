@@ -3,8 +3,24 @@ import PropTypes from "prop-types";
 
 // components
 
-
+import {getAllUsers} from "../..//services/apiUser";
 export default function CardTable({ color }) {
+  const [users, setUsers] = React.useState([]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await getAllUsers();
+      setUsers(response.data.users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  }
+
+  React.useEffect(() => {
+    fetchUsers();
+    console.log(users);
+  }, []);
+
   return (
     <>
       <div
@@ -95,33 +111,34 @@ export default function CardTable({ color }) {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
-                  <img
-                    src={require("assets/img/bootstrap.jpg").default}
-                    className="h-12 w-12 bg-white rounded-full border"
-                    alt="..."
-                  ></img>{" "}
-                  <span
-                    className={
-                      "ml-3 font-bold " +
-                      +(color === "light" ? "text-blueGray-600" : "text-white")
-                    }
-                  >
-                    Email
-                  </span>
+              {users.map((user) => (
+                <tr key={user.id}>
+                  <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                    <img
+                      src={require("assets/img/bootstrap.jpg").default}
+                      className="h-12 w-12 bg-white rounded-full border"
+                      alt="..."
+                    ></img>{" "}
+                    <span
+                      className={
+                        "ml-3 font-bold " +
+                        +(color === "light" ? "text-blueGray-600" : "text-white")
+                      }
+                    >
+                      {user.email}
+                    </span>
                 </th>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  Role
+                  {user.role}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  age
+                  {user.age}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  location
+                  {user.location}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  created at
+                  {user.created_at}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                   <button
@@ -138,6 +155,7 @@ export default function CardTable({ color }) {
                   </button>
                 </td>
               </tr>
+              ))}
             </tbody>
           </table>
         </div>
