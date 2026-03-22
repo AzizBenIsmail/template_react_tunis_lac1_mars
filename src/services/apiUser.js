@@ -1,0 +1,25 @@
+import axio from 'axios';
+
+//http://localhost:5000 Global URL for API
+
+//http:localhost:5000/Users gestion des utilisateurs
+//http:localhost:5000/reservations gestion des reservations
+//http:localhost:5000/rooms gestion des chambres
+
+const API_URL = 'http://localhost:5000/Users';
+
+//http:localhost:5000/Users/getAllUsers get all users
+//http:localhost:5000/Users/getUserById/:id get user by id
+//http:localhost:5000/Users/addUser add user
+//http:localhost:5000/Users/updateUser/:id update user
+//http:localhost:5000/Users/deleteUser/:id delete user
+
+//get => recuperer les données
+//post => ajouter des données
+//put => modifier des données
+//delete => supprimer des données
+
+//get all users
+export async function getAllUsers() {
+    return await axio.get(`${API_URL}/getAllUsers`);    
+}
