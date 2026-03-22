@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import { getAllUsers, deleteUser } from "../..//services/apiUser";
 export default function CardTable({ color }) {
-  const [users, setUsers] = React.useState([]);
+  const [users, setUsers] = React.useState([]); 
 
   const fetchUsers = async () => {
     try {
