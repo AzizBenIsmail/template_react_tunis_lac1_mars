@@ -3,13 +3,50 @@ import PropTypes from "prop-types";
 
 // components
 
-import { getAllUsers, deleteUser } from "../..//services/apiUser";
+import {
+  getAllUsers,
+  deleteUser,
+  addUser,
+  updateUser,
+} from "../../services/apiUser";
 export default function CardTable({ color }) {
-  const [users, setUsers] = React.useState([]); 
+  const [users, setUsers] = React.useState([]);
+  const [newUserData, setNewUserData] = React.useState({
+    email: "",
+    password: "",
+    role: "",
+    age: "",
+    location: "",
+    name: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target; // Get the name and value of the input field
+    setNewUserData({ ...newUserData, [name]: value }); // Update the newUserData state with the new value
+  console.log(newUserData);
+  };
+
+const handleAddUser = async () => {
+    try {
+      await addUser(newUserData);
+       fetchUsers(); // Refresh the user list after adding a new user
+      setNewUserData({
+        email: "",
+        password: "",
+        role: "",
+        age: "",
+        location: "",
+        name: "",
+      }); // Clear the input fields after adding a user
+      } catch (error) {
+      console.error("Error adding user:", error);
+    }
+  };   
 
   const fetchUsers = async () => {
     try {
       const response = await getAllUsers();
+      console.log(response);
       setUsers(response.data.users);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -152,13 +189,13 @@ export default function CardTable({ color }) {
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                     <button
-                      className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-sm px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                       type="button"
                     >
                       update
                     </button>
                     <button
-                      className="bg-red-500 text-white active:bg-lightBlue-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      className="bg-red-500 text-white active:bg-lightBlue-600 font-bold uppercase text-sm px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                       type="button"
                       onClick={() => {
                         handleDelete(user._id);
@@ -171,6 +208,70 @@ export default function CardTable({ color }) {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+      <div>
+        <h2 className="text-xl font-bold leading-normal mt-0 mb-2 text-lightBlue-600">
+          Add New User
+        </h2>
+        <div class="mb-3 pt-0">
+          <input
+            type="text"
+            placeholder="Name"
+            class="px-3 mr-2 py-3 placeholder-blueGray-500 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-1/4"
+            onChange={handleInputChange}
+            name="name"
+          />
+          <input
+            type="text"
+            placeholder="Role"
+            class="px-3 py-3 placeholder-blueGray-500 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-1/4"
+            onChange={handleInputChange}
+            name="role"
+          />
+          <input
+            type="number"
+            min={20}
+            max={90}
+            placeholder="Age"
+            class="px-3 py-3 mr-2 ml-2 placeholder-blueGray-500 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-1/4"
+            onChange={handleInputChange}
+            name="age"
+          />
+          <input
+            type="text"
+            placeholder="Location"
+            class="px-3 py-3 placeholder-blueGray-500 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-1/4"
+            onChange={handleInputChange}
+            name="location"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            class="px-3 py-3 mr-2 ml-2 placeholder-blueGray-500 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-1/4"
+            onChange={handleInputChange}
+            name="email"
+          />
+          <input
+            type="text"
+            placeholder="Password"
+            class="px-3 py-3 mt-2 placeholder-blueGray-500 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-1/4"
+            onChange={handleInputChange}
+            name="password"
+          />
+          <button
+            className="bg-lightBlue-500 mt-2 text-white active:bg-lightBlue-600 font-bold uppercase text-sm px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+            type="button"
+            onClick={handleAddUser}
+          >
+            Add User
+          </button>
+          <button
+            className="bg-red-500 mt-2 text-white active:bg-lightBlue-600 font-bold uppercase text-sm px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+            type="button"
+          >
+            cancel
+          </button>
         </div>
       </div>
     </>
