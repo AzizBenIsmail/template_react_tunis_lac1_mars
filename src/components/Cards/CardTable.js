@@ -23,13 +23,13 @@ export default function CardTable({ color }) {
   const handleInputChange = (e) => {
     const { name, value } = e.target; // Get the name and value of the input field
     setNewUserData({ ...newUserData, [name]: value }); // Update the newUserData state with the new value
-  console.log(newUserData);
+    console.log(newUserData);
   };
 
-const handleAddUser = async () => {
+  const handleAddUser = async () => {
     try {
       await addUser(newUserData);
-       fetchUsers(); // Refresh the user list after adding a new user
+      fetchUsers(); // Refresh the user list after adding a new user
       setNewUserData({
         email: "",
         password: "",
@@ -38,10 +38,19 @@ const handleAddUser = async () => {
         location: "",
         name: "",
       }); // Clear the input fields after adding a user
-      } catch (error) {
+    } catch (error) {
       console.error("Error adding user:", error);
     }
-  };   
+  };
+
+  const handleUpdateUser = async () => {
+    try {
+      await updateUser(newUserData._id, newUserData);
+      fetchUsers(); // Refresh the user list after updating a user
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+  };
 
   const fetchUsers = async () => {
     try {
@@ -191,6 +200,7 @@ const handleAddUser = async () => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-sm px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                       type="button"
+                      onClick={()=>{setNewUserData(user)}}
                     >
                       update
                     </button>
@@ -220,6 +230,7 @@ const handleAddUser = async () => {
             placeholder="Name"
             class="px-3 mr-2 py-3 placeholder-blueGray-500 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-1/4"
             onChange={handleInputChange}
+            defaultValue={newUserData.name}
             name="name"
           />
           <input
@@ -227,6 +238,7 @@ const handleAddUser = async () => {
             placeholder="Role"
             class="px-3 py-3 placeholder-blueGray-500 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-1/4"
             onChange={handleInputChange}
+            defaultValue={newUserData.role}
             name="role"
           />
           <input
@@ -236,6 +248,7 @@ const handleAddUser = async () => {
             placeholder="Age"
             class="px-3 py-3 mr-2 ml-2 placeholder-blueGray-500 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-1/4"
             onChange={handleInputChange}
+            defaultValue={newUserData.age}
             name="age"
           />
           <input
@@ -243,6 +256,7 @@ const handleAddUser = async () => {
             placeholder="Location"
             class="px-3 py-3 placeholder-blueGray-500 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-1/4"
             onChange={handleInputChange}
+            defaultValue={newUserData.location}
             name="location"
           />
           <input
@@ -250,6 +264,7 @@ const handleAddUser = async () => {
             placeholder="Email"
             class="px-3 py-3 mr-2 ml-2 placeholder-blueGray-500 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-1/4"
             onChange={handleInputChange}
+            defaultValue={newUserData.email}
             name="email"
           />
           <input
@@ -265,6 +280,15 @@ const handleAddUser = async () => {
             onClick={handleAddUser}
           >
             Add User
+          </button>
+          <button
+            className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-sm px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+            type="button"
+            onClick={() => {
+              handleUpdateUser();
+            }}
+          >
+            update
           </button>
           <button
             className="bg-red-500 mt-2 text-white active:bg-lightBlue-600 font-bold uppercase text-sm px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
